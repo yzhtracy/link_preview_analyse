@@ -1,6 +1,6 @@
 import 'dart:isolate';
 
-enum LinkPreviewType { text, image, video }
+enum LinkPreviewType { web, image, video, audio }
 
 class LinkPreviewInfo {
   //标题
@@ -10,7 +10,7 @@ class LinkPreviewInfo {
   //页面的描述文字
   String description;
   //页面类型
-  LinkPreviewType type = LinkPreviewType.text;
+  LinkPreviewType type = LinkPreviewType.web;
   //页面的内容链接(图片或视频)
   String mediaUrl;
   //原请求地址
@@ -20,7 +20,7 @@ class LinkPreviewInfo {
   int loadTime;
 
   Map<dynamic, dynamic> toMap() {
-    Map<dynamic, dynamic> map = {
+    final Map<dynamic, dynamic> map = {
       "title": title,
       "icon": icon,
       "description": description,
@@ -33,13 +33,15 @@ class LinkPreviewInfo {
   }
 
   static LinkPreviewInfo fromMap(Map<dynamic, dynamic> map) {
-    LinkPreviewInfo info = LinkPreviewInfo();
+    final LinkPreviewInfo info = LinkPreviewInfo();
     info.title = map["title"];
     info.icon = map["icon"];
     info.description = map["description"];
     info.mediaUrl = map["mediaUrl"];
     info.redirectUrl = map["redirectUrl"];
     info.loadTime = map["loadTime"];
+    final int typeIndex = map["type"];
+    info.type = LinkPreviewType.values[typeIndex];
     return info;
   }
 }
